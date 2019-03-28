@@ -24,6 +24,19 @@ $config['plugins'] = array(
 );
 ```
 
+Installation (ISPConfig 3.1)
+----------------------------------------
+```
+#!/bin/bash
+cd /usr/share/roundcube/plugins
+wget https://github.com/6ec123321/filters/archive/master.zip
+unzip master.zip && mv filters-master filters
+cd filters && mkdir /etc/roundcube/plugins/filters
+mv config.inc.php /etc/roundcube/plugins/filters/config.inc.php
+ln -s /etc/roundcube/plugins/filters/config.inc.php config.inc.php
+ln -s /usr/share/roundcube/plugins/filters /var/lib/roundcube/plugins/filters
+```
+
 Configuration
 ----------------------------------------
 
