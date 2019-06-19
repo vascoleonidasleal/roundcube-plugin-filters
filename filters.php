@@ -5,7 +5,7 @@
  *
  * Plugin that adds a new tab to the settings section to create client-side e-mail filtering.
  *
- * @version 2.1.9
+ * @version 2.2.0
  * @author Roberto Zarrelli <zarrelli@unimol.it>
  * @developer Artur Petrov <artur@phpchain.ru>
  */
@@ -100,7 +100,9 @@ class filters extends rcube_plugin{
 	$arr_prefs = $this->rc->config->get('filters', array());
 
 	foreach ($arr_prefs as $key => $saved_filter){
-		// if saved destination folder exists and current folder is "check folder"
+	  // if saved source folder not exists set to INBOX
+	  if (empty($saved_filter['srcfolder'])) $saved_filter['srcfolder'] = 'INBOX';
+	  // if saved destination folder exists and current folder is "check folder"
 	  if (method_exists($imap,'mailbox_exists')){
 		if ($imap->mailbox_exists($saved_filter['destfolder']) && $imap->mailbox_exists($saved_filter['srcfolder']) && $saved_filter['srcfolder']==$open_mbox && $saved_filter['destfolder']!=$saved_filter['srcfolder']){
 		  $saved_filter['searchstring'] = html_entity_decode($saved_filter['searchstring']);
@@ -174,8 +176,8 @@ class filters extends rcube_plugin{
     else{
       $new_arr['whatfilter'] = $whatfilter;
       $new_arr['searchstring'] = htmlspecialchars(addslashes($searchstring));
-      $new_arr['srcfolder'] = addslashes($srcfolder);
-      $new_arr['destfolder'] = addslashes($destfolder);
+      $new_arr['srcfolder'] = $srcfolder;
+      $new_arr['destfolder'] = $destfolder;
       $new_arr['messages'] = $messages;
       $new_arr['filterpriority'] = $filterpriority;
       $new_arr['markread'] = $markread;
@@ -280,6 +282,7 @@ class filters extends rcube_plugin{
     else {
       foreach ($arr_prefs['filters'] as $key => $saved_filter){
 	if (empty($saved_filter['markread'])) $saved_filter['markread'] = 'none';
+	if (empty($saved_filter['srcfolder'])) $saved_filter['srcfolder'] = 'INBOX';
 	$srcfolder_id = $saved_filter['srcfolder'];
 	$folder_id = $saved_filter['destfolder'];
 	if (function_exists('rcmail::get_instance()->localize_folderpath')){
@@ -345,11 +348,11 @@ class filters extends rcube_plugin{
       foreach($headers as $whatfilter){
       if (isset($this->searchstring[$whatfilter])){
         foreach ($this->searchstring[$whatfilter] as $from => $dest){
-          $arr = explode("#",$dest);
-          $destination = $arr[0];
-          $msg_filter = $arr[1];
-		  $filterpriority = $arr[2];
-		  $markread = $arr[3];
+	  $arr = explode("#",$dest);
+	  $destination = $arr[0];
+	  $msg_filter = $arr[1];
+	  $filterpriority = $arr[2];
+	  $markread = $arr[3];
 	  $field = isset($message->$whatfilter) ? $message->$whatfilter : (isset ($message->others[strtolower($whatfilter)]) ? $message->others[strtolower($whatfilter)] : "" );
 
         if ($this->filters_searchString($field, $from) != false && $destination!=$this->open_mbox){
@@ -421,7 +424,7 @@ class filters extends rcube_plugin{
     if ($tmp !== FALSE){
       $ret = TRUE;
     }
-    
+
     else{
       if ($this->decodeBase64Msg === TRUE){
         // decode and search BASE64 msg

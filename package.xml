@@ -19,16 +19,16 @@
 		<email>artur@phpchain.ru</email>
 		<active>yes</active>
 	</lead>
-	<date>2019-03-14</date>
+	<date>2019-06-19</date>
 	<version>
-		<release>2.1.9</release>
-		<api>2.1.9</api>
+		<release>2.2.0</release>
+		<api>2.2.0</api>
 	</version>
 	<stability>
 		<release>stable</release>
 		<api>stable</api>
 	</stability>
-	<license uri="http://www.gnu.org/licenses/agpl.html">GNU GPLv3</license>
+	<license uri="https://www.gnu.org/licenses/agpl-3.0.ru.html">GNU GPLv3</license>
 	<notes>-</notes>
 	<contents>
 		<dir baseinstalldir="/" name="/">
@@ -41,10 +41,12 @@
 			<file name="localization/en_US.inc" role="data"></file>
 			<file name="localization/es_ES.inc" role="data"></file>
 			<file name="localization/fr_FR.inc" role="data"></file>
+			<file name="localization/hu_HU.inc" role="data"></file>
 			<file name="localization/it_IT.inc" role="data"></file>
 			<file name="localization/ja_JP.inc" role="data"></file>
 			<file name="localization/nl_NL.inc" role="data"></file>
 			<file name="localization/pl_PL.inc" role="data"></file>
+			<file name="localization/pt_BR.inc" role="data"></file>
 			<file name="localization/pt_PT.inc" role="data"></file>
 			<file name="localization/ro_RO.inc" role="data"></file>
 			<file name="localization/ru_RU.inc" role="data"></file>

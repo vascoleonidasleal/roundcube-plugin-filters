@@ -3,7 +3,7 @@ Roundcube Plugin Filters
 
 Plugin that adds a new tab to the settings section to create client-side e-mail filtering.
 
-@version 2.1.9
+@version 2.2.0
 @author Roberto Zarrelli <zarrelli@unimol.it>
 @developer Artur Petrov <artur@phpchain.ru>
 
@@ -115,3 +115,6 @@ History
   - Added new option for select source folder.
 * 2.1.9:
   - Added check for additional headers from config.inc.php ($config['spam_headers']=array()).
+* 2.2.0:
+  - Fixed error "filters have stopped working after an update from version 2.1.7 to 2.1.9" (https://github.com/6ec123321/filters/issues/46);
+  - Fixed error "Folder name with single quotation marks not filtered".
