@@ -12,7 +12,7 @@ $labels['to'] = 'Komu';
 $labels['cc'] = 'Kopie';
 $labels['subject'] = 'Předmět';
 $labels['delete'] = 'Smazat';
-$labels['filterpriority'] = 'Nespouštet ostatní pravidla';
+$labels['filterpriority'] = 'Nespouštět ostatní pravidla';
 
 $messages = array();
 $messages['nosearchstring'] = "Pole 'Obsahuje' nemůže zůstat prázdné.";
