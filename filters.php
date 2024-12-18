@@ -192,30 +192,42 @@ class filters extends rcube_plugin{
     $this->rc->output->send('plugin');
   }
 
-  function filters_delete(){
+function filters_delete() {
     $user = $this->rc->user;
 
     $this->add_texts('localization/');
     $this->register_handler('plugin.body', array($this, 'filters_form'));
     $this->rc->output->set_pagetitle($this->gettext('filters'));
 
-    if (isset($_GET[filterid])){
-      $filter_id = $_GET[filterid];
-      $arr_prefs = $user->get_prefs();
-      $arr_prefs['filters'][$filter_id] = '';
-      $arr_prefs['filters'] = array_diff($arr_prefs['filters'], array(''));
-      if ($user->save_prefs($arr_prefs))
-        $this->rc->output->command('display_message', $this->gettext('successfullydeleted'), 'confirmation');
-      else
-        $this->rc->output->command('display_message', $this->gettext('unsuccessfullydeleted'), 'error');
+    if (isset($_GET['filterid'])) {  // Use quotes around array keys
+        $filter_id = intval($_GET['filterid']);  // Sanitize input
+        $arr_prefs = $user->get_prefs();
+
+        // Ensure 'filters' exists and is an array
+        if (isset($arr_prefs['filters']) && is_array($arr_prefs['filters'])) {
+            // Remove the filter using unset
+            if (array_key_exists($filter_id, $arr_prefs['filters'])) {
+                unset($arr_prefs['filters'][$filter_id]);
+
+                // Re-index the array to avoid gaps
+                $arr_prefs['filters'] = array_values($arr_prefs['filters']);
+
+                // Save the updated preferences
+                if ($user->save_prefs($arr_prefs)) {
+                    $this->rc->output->command('display_message', $this->gettext('successfullydeleted'), 'confirmation');
+                } else {
+                    $this->rc->output->command('display_message', $this->gettext('unsuccessfullydeleted'), 'error');
+                }
+            } else {
+                $this->rc->output->command('display_message', $this->gettext('filternotfound'), 'error');
+            }
+        }
     }
 
-    if (function_exists('rcmail::get_instance()->overwrite_action'))
-      rcmail::get_instance()->overwrite_action('plugin.filters');
-    else $this->rc->overwrite_action('plugin.filters');
-
+    $this->rc->overwrite_action('plugin.filters');
     $this->rc->output->send('plugin');
-  }
+}
+
 
   function filters_form(){
 
